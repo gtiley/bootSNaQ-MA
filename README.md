@@ -5,10 +5,15 @@ Generating bootstrap replicates for SNaQ in the presence of multiple alleles is 
 
 Aside from configuring the control file and your template.sh file, there are three "runmodes" taken as command line arguments:
 * runmode = 0
+
     analyze [between-species quartets](http://crsl4.github.io/PhyloNetworks.jl/latest/man/multiplealleles/#between-species-4-taxon-sets) only
+
 * runmode = 1
+
     analyze [between- and witin-species quartets](http://crsl4.github.io/PhyloNetworks.jl/latest/man/multiplealleles/#within-species-4-taxon-sets)
+
 * runmode = 2
+
     collect the best network from each analysis of a collection of bootstrap trees into a file called `bootstrapNetworks.txt`. You would use this file for getting the bootstrap proportions on a network in PhyloNetworks/PhyloPlots.
 
 
