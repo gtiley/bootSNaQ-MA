@@ -41,9 +41,9 @@ elsif (scalar(@ARGV) > 0)
 		if ($ARGV[$i] eq "--runmode")
 		{
 	    	$passedArgs{runmode} = $ARGV[$i+1];
-	    	if (($passedArgs{runmode} != 0) && ($passedArgs{runmode} != 1))
+	    	if (($passedArgs{runmode} != 0) && ($passedArgs{runmode} != 1) && ($passedArgs{runmode} != 2))
 	    	{
-	    		die ("--runmode must be either 0 or 1\n")
+	    		die ("--runmode must be either 0 or 1 or 2\n")
 	    	}
 		}
 		if ($ARGV[$i] eq "--template")
@@ -121,7 +121,7 @@ while (<FH1>)
 }
 close FH1;
 
-if ($runmode == 0 || $runmode == 1)
+if ($passedArgs{runmode} == 0 || $passedArgs{runmode} == 1)
 {
 my @loci = ();
 my %bootstraps = ();
@@ -288,18 +288,17 @@ net = snaq!(T_sp, d_sp, hmax=$controlArgs{HMAX}, runs=$controlArgs{NRUNS}, filen
 }
 }
 
-if ($runmode == 2)
+if ($passedArgs{runmode} == 2)
 {
 	open OUT1,'>',"bootstrapNetworks.txt";
 	for my $i (1..$controlArgs{NREPS})
 	{
-		open FH1,'<',"$controlArgs{SNAQ_OUTPUT}/$controlArgs{OUTPUT_SUFFIX}";
+		open FH1,'<',"$controlArgs{SNAQ_OUTPUT}/$i.$controlArgs{OUTPUT_SUFFIX}.out";
 		while (<FH1>)
 		{
-			#(Dcam,#H22:::0.39188267168962376,(Dexp,(((((Dcli,(#H20:1.9090270763372683::0.29864346609009923,((Dlud,(Dcel)#H26:::0.6714880557620975):1.0947278700928147,(#H26:::0.32851194423790253,Dgol):1.0947278700928147)0.38:0.0):0.2289475070654076)0.55:0.22917418022280492,Dcri)0.45:0.87641650348035,((Pspe,Pmun)0.67:3.207869607517843)#H20:0.0::0.7013565339099008)0.55:0.0,Dcar)0.5:0.11003749574064371,(Dint)#H22:::0.6081173283103762):0.5466820098601687):2.837836625151906)0.67; -Ploglik = 270.04007844582844
 			my $line = $_;
 			chomp $line;
-			if ($line = ~m/(\S+;)\s+\-Ploglik\s+\=\s+\S+/)
+			if ($line =~ m/(\S+;)\s+\-Ploglik\s+\=\s+\S+/)
 			{
 				my $bestNetwork = $1;
 				print OUT1 "$bestNetwork\n";
